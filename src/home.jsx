@@ -1,6 +1,10 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Home09Icon, WorkIcon } from "@hugeicons/core-free-icons";
+import {
+  Home09Icon,
+  WorkIcon,
+  ArrowUpRight01Icon,
+} from "@hugeicons/core-free-icons";
 
 // Google Fonts
 const fontLink = document.createElement("link");
@@ -107,7 +111,7 @@ function Nav({ active, setActive }) {
               }
             `}
           >
-            <HugeiconsIcon icon={Icon} size={35} className="" />
+            <HugeiconsIcon icon={Icon} size={28} className="" />
             {label}
           </button>
         ))}
@@ -116,7 +120,7 @@ function Nav({ active, setActive }) {
 
         <button
           onClick={(e) => scrollTo(e, "#contact")}
-          className="bg-[#f2f0eb] text-[#0d0d0d] font-semibold text-[17px] px-[22px] py-2
+          className="bg-[#f2f0eb] text-[#0d0d0d] font-semibold md:text-[17px] text-[12px] md:px-[22px] px-[15px] py-2
             rounded-full transition-all duration-200 border-none cursor-pointer
             hover:bg-[#e5e2da] active:scale-[0.97] ml-0.5"
         >
@@ -162,10 +166,10 @@ export default function App() {
         </div>
 
         {/* Hero title */}
-        <h1 className="font-display text-[clamp(45px,5vw,85px)] font-semibold leading-[1.05] tracking-[-0.02em] text-[#0d0d0d] mb-7">
+        <h1 className="font-display md:text-[clamp(45px,5vw,85px)] text-[clamp(38px,2vw,72px)] font-semibold leading-[1.05] tracking-[-0.02em] text-[#0d0d0d] mb-7">
           I'm <em className="italic font-light">Chisom,</em>
           <br />
-          a Fullstack Dev
+          a Fullstack Developer
           <br />
           based in Nigeria
         </h1>
@@ -183,7 +187,10 @@ export default function App() {
           >
             Contact Me
             <span className="w-7 h-7 bg-white rounded-full flex items-center justify-center">
-              <i class="bi bi-arrow-up-right text-black font-bold text-sm"></i>
+              <HugeiconsIcon
+                icon={ArrowUpRight01Icon}
+                class="bi bi-arrow-up-right text-black font-bold text-sm"
+              />
             </span>
           </a>
           <a
@@ -192,10 +199,6 @@ export default function App() {
           >
             View Works
           </a>
-        </div>
-
-        <div className="mt-[70px]">
-          <div className="scroll-line w-px h-[50px] bg-gradient-to-b from-transparent to-[#aaa] mx-auto" />
         </div>
       </section>
 
@@ -224,7 +227,7 @@ export default function App() {
                 key={p.id}
                 className={`min-w-[320px] h-[220px] bg-gradient-to-br ${p.gradient} rounded-[20px] relative cursor-pointer`}
               >
-                <span className=" text-white text-[20px] absolute bottom-3.5 left-3.5 font-semibold px-3.5 py-1.5 mt-5 ">
+                <span className=" text-white text-[20px] md:absolute bottom-3.5 left-3.5 font-semibold md:px-3.5 p-5 py-1.5 mt-5 ">
                   {p.description}
                 </span>
               </div>
@@ -335,13 +338,13 @@ export default function App() {
           </p>
           <div className="flex gap-3.5 justify-center flex-wrap relative z-10">
             <a
-              href="mailto:chisom@email.com"
+              href="mailto:chisomchidike03@email.com"
               className="bg-white text-[#0d0d0d] text-[15px] font-bold px-8 py-3.5 rounded-full inline-flex items-center gap-2 no-underline transition-all duration-200 hover:bg-[#f0ede8] hover:-translate-y-px"
             >
               Send Me an Email ✉️
             </a>
             <a
-              href="#"
+              href="https://github.com/iamchisomdev"
               className="bg-transparent text-white border border-white/25 text-[15px] font-semibold px-8 py-3.5 rounded-full no-underline transition-all duration-200 hover:border-white/50 hover:-translate-y-px"
             >
               View GitHub →
