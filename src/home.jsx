@@ -51,7 +51,7 @@ style.innerHTML = `
   .nav-logo { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 400; color: var(--ink); letter-spacing: -0.02em; }
   .nav-links { display: flex; align-items: center; gap: 3px; }
   .nav-link {
-    font-size: 18px; font-weight: 600; color: var(--ink2);
+    font-size: 16px; font-weight: 600; color: var(--ink2);
     text-decoration: none; padding: 7px 16px;
     border-radius: 100px; transition: all 0.18s;
     background: transparent; border: none; cursor: pointer;
@@ -59,7 +59,7 @@ style.innerHTML = `
   .nav-link:hover { background: #e8e3d8; color: var(--ink); }
   .nav-cta {
     background: var(--ink); color: var(--cream);
-    font-size: 18px; font-weight: 700;
+    font-size: 16px; font-weight: 700;
     padding: 8px 20px; border-radius: 100px;
     text-decoration: none; transition: all 0.18s;
     border: none; cursor: pointer;
@@ -77,7 +77,7 @@ style.innerHTML = `
     display: inline-flex; align-items: center; gap: 7px;
     background: var(--green-bg); color: var(--green-text);
     font-size: 12px; font-weight: 700; letter-spacing: 0.05em;
-    padding: 6px 14px; border-radius: 100px; margin-bottom: 28px;
+    padding: 6px 14px; border-radius: 100px; margin-bottom: 23px; margin-top: 30px;
   }
   .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green-dot); animation: blink 2s infinite; }
   @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
@@ -278,6 +278,7 @@ style.innerHTML = `
   @media (max-width: 600px) {
     nav { padding: 12px 16px; }
     .nav-link { display: none; }
+    .nav-cta { font-size: 14px; }
     .section, .section-sm { padding-left: 16px; padding-right: 16px; }
     #hero { padding-top: 100px; }
     .contact-card { padding: 44px 20px; }
