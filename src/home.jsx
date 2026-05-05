@@ -49,9 +49,9 @@ style.innerHTML = `
     border-bottom: 1px solid var(--border);
   }
   .nav-logo { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 400; color: var(--ink); letter-spacing: -0.02em; }
-  .nav-links { display: flex; align-items: center; gap: 4px; }
+  .nav-links { display: flex; align-items: center; gap: 3px; }
   .nav-link {
-    font-size: 13px; font-weight: 600; color: var(--ink2);
+    font-size: 18px; font-weight: 600; color: var(--ink2);
     text-decoration: none; padding: 7px 16px;
     border-radius: 100px; transition: all 0.18s;
     background: transparent; border: none; cursor: pointer;
@@ -59,7 +59,7 @@ style.innerHTML = `
   .nav-link:hover { background: #e8e3d8; color: var(--ink); }
   .nav-cta {
     background: var(--ink); color: var(--cream);
-    font-size: 13px; font-weight: 700;
+    font-size: 18px; font-weight: 700;
     padding: 8px 20px; border-radius: 100px;
     text-decoration: none; transition: all 0.18s;
     border: none; cursor: pointer;
@@ -323,19 +323,19 @@ const projects = [
 ];
 
 const skills = [
-  { name: "HTML5", },
-  { name: "CSS3", },
-  { name: "JavaScript", },
-  { name: "React.js", },
-  { name: "Next.js", },
-  { name: "Node.js", },
-  { name: "Express.js", },
-  { name: "TypeScript", },
-  { name: "PostgreSQL", },
-  { name: "Tailwind CSS", },
-  { name: "Docker", },
-  { name: "Tanstack Query", },
-  { name: "Supabase", },
+  { name: "HTML5" },
+  { name: "CSS3" },
+  { name: "JavaScript" },
+  { name: "React.js" },
+  { name: "Next.js" },
+  { name: "Node.js" },
+  { name: "Express.js" },
+  { name: "TypeScript" },
+  { name: "PostgreSQL" },
+  { name: "Tailwind CSS" },
+  { name: "Docker" },
+  { name: "Tanstack Query" },
+  { name: "Supabase" },
 ];
 
 const stats = [
@@ -365,10 +365,27 @@ function Nav() {
     <nav>
       <span className="nav-logo">Chisom</span>
       <div className="nav-links">
-        <button className="nav-link" onClick={() => go("hero")}>Home</button>
-        <button className="nav-link" onClick={() => go("work")}>Work</button>
-        <button className="nav-link" onClick={() => go("about")}>About</button>
-        <button className="nav-cta" onClick={() => window.open("/resume.pdf", "_blank")}>Resume</button>
+        <button className="nav-link" onClick={() => go("hero")}>
+          Home
+        </button>
+        <button className="nav-link" onClick={() => go("work")}>
+          Work
+        </button>
+        <button className="nav-link" onClick={() => go("about")}>
+          About
+        </button>
+        <a
+          href="#contact"
+          className="nav-cta"
+          onClick={(e) => {
+            e.preventDefault();
+            document
+              .getElementById("contact")
+              ?.scrollIntoView({ behavior: "smooth" });
+          }}
+        >
+          Contact Me
+        </a>
       </div>
     </nav>
   );
@@ -383,7 +400,7 @@ export default function App() {
         entries.forEach((e) => {
           if (e.isIntersecting) e.target.classList.add("visible");
         }),
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
     document.querySelectorAll(".fade-up").forEach((el) => obs.observe(el));
     return () => obs.disconnect();
@@ -402,8 +419,6 @@ export default function App() {
         <h1 className="headline">
           I'm <em>Chisom,</em>
           <br />a Fullstack Developer
-          <br />
-          based in Nigeria
         </h1>
         <p className="hero-sub">
           I build modern web applications focused on clean, maintainable code
@@ -411,24 +426,79 @@ export default function App() {
         </p>
         <div className="btn-row">
           <a
-            href="#contact"
-            className="btn-dark"
-            onClick={(e) => {
-              e.preventDefault();
-              document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-            }}
-          >
-            Contact Me
-          </a>
-          <a
             href="#work"
             className="btn-outline"
             onClick={(e) => {
               e.preventDefault();
-              document.getElementById("work")?.scrollIntoView({ behavior: "smooth" });
+              document
+                .getElementById("work")
+                ?.scrollIntoView({ behavior: "smooth" });
             }}
           >
-            View Work
+            View Projects
+          </a>
+          <button
+            className="btn-dark"
+            onClick={() =>
+              window.open(
+                "https://docs.google.com/document/d/19fWTH_2-MjmF0c5911RM_6HmgHxaop_hvION9akJIis/edit?usp=drivesdk",
+                "_blank",
+              )
+            }
+          >
+            My Resume
+          </button>
+        </div>
+        <div className="flex gap-2 mt-3">
+          <a
+            href="https://github.com/iamchisomdev"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-2 py-2 text-sm font-medium text-gray-700 hover:text-black"
+          >
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              className="w-5 h-5"
+            >
+              <path d="M12 0C5.373 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 6.6c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z" />
+            </svg>
+          </a>
+
+          <a
+            href="https://linkedin.com/in/chisomdev"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-2 py-2 text-sm font-medium text-gray-700 hover:text-black"
+          >
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              className="w-5 h-5"
+            >
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+            </svg>
+          </a>
+
+          <a
+            href="https://x.com/chisomdev"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-2 py-2 text-sm font-medium text-gray-700 hover:text-black"
+          >
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              className="w-5 h-5"
+            >
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77Z" />
+            </svg>
           </a>
         </div>
       </section>
@@ -440,9 +510,6 @@ export default function App() {
         <p className="label">Selected Projects</p>
         <div className="work-header">
           <h2 className="title">My Recent Work</h2>
-          <a href="#" className="btn-outline" style={{ fontSize: 13, padding: "9px 18px" }}>
-            All Projects →
-          </a>
         </div>
         <div className="projects">
           {projects.map((p) => (
@@ -450,12 +517,33 @@ export default function App() {
               <div className="proj-header">
                 <div className="proj-title">{p.title}</div>
                 <div className="proj-actions">
-                  <a href={p.github} className="proj-action" title="GitHub" target="_blank" rel="noreferrer">
+                  <a
+                    href={p.github}
+                    className="proj-action"
+                    title="GitHub"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     <GhIcon />
                   </a>
-                  <a href={p.live} className="proj-action" title="Live site" target="_blank" rel="noreferrer">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M7 17L17 7M7 7h10v10"/>
+                  <a
+                    href={p.live}
+                    className="proj-action"
+                    title="Live site"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <svg
+                      width="13"
+                      height="13"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M7 17L17 7M7 7h10v10" />
                     </svg>
                   </a>
                 </div>
@@ -463,7 +551,9 @@ export default function App() {
               <div className="proj-desc">{p.description}</div>
               <div className="tags">
                 {p.tech.map((t) => (
-                  <span key={t} className="tag">{t}</span>
+                  <span key={t} className="tag">
+                    {t}
+                  </span>
                 ))}
               </div>
             </div>
@@ -497,7 +587,9 @@ export default function App() {
               style={{ marginTop: 4 }}
               onClick={(e) => {
                 e.preventDefault();
-                document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+                document
+                  .getElementById("contact")
+                  ?.scrollIntoView({ behavior: "smooth" });
               }}
             >
               Let's Work Together
@@ -527,11 +619,12 @@ export default function App() {
       {/* SKILLS */}
       <section className="section-sm fade-up">
         <p className="label">Toolkit</p>
-        <h2 className="title" style={{ marginBottom: 24 }}>Skills &amp; Tools</h2>
+        <h2 className="title" style={{ marginBottom: 24 }}>
+          Skills &amp; Tools
+        </h2>
         <div className="skills-wrap">
           {skills.map((s) => (
             <div key={s.name} className="skill">
-              <span style={{ fontSize: 15 }}>{s.icon}</span>
               {s.name}
             </div>
           ))}
@@ -573,21 +666,39 @@ export default function App() {
         <span className="footer-copy">© 2026 Chisom. All rights reserved.</span>
         <div className="footer-icons">
           {/* Twitter / X */}
-          <a href="#" className="footer-icon" title="Twitter" target="_blank" rel="noreferrer">
+          <a
+            href="https://twitter.com/iamchisomdev"
+            className="footer-icon"
+            title="Twitter"
+            target="_blank"
+            rel="noreferrer"
+          >
             <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77Z"/>
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77Z" />
             </svg>
           </a>
           {/* LinkedIn */}
-          <a href="#" className="footer-icon" title="LinkedIn" target="_blank" rel="noreferrer">
+          <a
+            href="https://linkedin.com/in/chisomdev"
+            className="footer-icon"
+            title="LinkedIn"
+            target="_blank"
+            rel="noreferrer"
+          >
             <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
             </svg>
           </a>
           {/* GitHub */}
-          <a href="https://github.com/iamchisomdev" className="footer-icon" title="GitHub" target="_blank" rel="noreferrer">
+          <a
+            href="https://github.com/iamchisomdev"
+            className="footer-icon"
+            title="GitHub"
+            target="_blank"
+            rel="noreferrer"
+          >
             <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 0C5.373 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 6.6c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+              <path d="M12 0C5.373 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 6.6c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z" />
             </svg>
           </a>
         </div>
