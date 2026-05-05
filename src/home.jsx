@@ -323,21 +323,26 @@ const projects = [
 ];
 
 const skills = [
-  { name: "React", icon: "⚛️" },
-  { name: "Next.js", icon: "▲" },
-  { name: "TypeScript", icon: "🔷" },
-  { name: "Node.js", icon: "🟢" },
-  { name: "PostgreSQL", icon: "🐘" },
-  { name: "Tailwind CSS", icon: "🎨" },
-  { name: "GraphQL", icon: "◈" },
-  { name: "Docker", icon: "🐳" },
+  { name: "HTML5", },
+  { name: "CSS3", },
+  { name: "JavaScript", },
+  { name: "React.js", },
+  { name: "Next.js", },
+  { name: "Node.js", },
+  { name: "Express.js", },
+  { name: "TypeScript", },
+  { name: "PostgreSQL", },
+  { name: "Tailwind CSS", },
+  { name: "Docker", },
+  { name: "Tanstack Query", },
+  { name: "Supabase", },
 ];
 
 const stats = [
   { n: "20+", l: "Projects Completed" },
   { n: "15+", l: "Happy Clients" },
   { n: "3+", l: "Years Experience" },
-  { n: "5★", l: "Average Rating" },
+  { n: "100%", l: "Client Satisfaction" },
 ];
 
 // ── GitHub SVG ────────────────────────────────────────────────────────────────
