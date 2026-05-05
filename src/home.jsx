@@ -299,8 +299,8 @@ const projects = [
     description:
       "A seamless shopping experience with product browsing, secure checkout, order tracking, and personalized recommendations.",
     tech: ["React", "Node.js", "Supabase", "Tailwind CSS"],
-    live: "https://fast-pizza-l5er.vercel.app",
-    github: "#",
+    live: "https://omoflexy.vercel.app/",
+    github: "https://github.com/iamchisomdev/omoflexy",
   },
   {
     id: "02",
@@ -308,17 +308,17 @@ const projects = [
     description:
       "A fully responsive data subscription marketplace where users can buy and sell data and airtime with smooth, user-friendly transactions.",
     tech: ["HTML", "Bootstrap 5", "JavaScript"],
-    live: "#",
-    github: "#",
+    live: "https://web-first-work.vercel.app/",
+    github: "https://github.com/iamchisomdev/web",
   },
   {
     id: "03",
     title: "Waitlist",
     description:
       "A responsive product launch site with a full referral system, letting users refer one another and track their position ahead of launch.",
-    tech: ["HTML", "Bootstrap 5", "JavaScript"],
-    live: "#",
-    github: "#",
+    tech: ["Nextjs", "Tailwindcss", "supabase"],
+    live: "https://chisomdev.vercel.app/backend-waitlist.vercel.app",
+    github: "https://github.com/iamchisomdev/backend-waitlist",
   },
 ];
 
