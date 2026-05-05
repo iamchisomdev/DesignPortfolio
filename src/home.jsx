@@ -1,59 +1,324 @@
 import { useState, useEffect } from "react";
-import { HugeiconsIcon } from "@hugeicons/react";
-import {
-  Home09Icon,
-  WorkIcon,
-  ArrowUpRight01Icon,
-} from "@hugeicons/core-free-icons";
 
-// Google Fonts
+// ── Fonts & Global Styles ─────────────────────────────────────────────────────
 const fontLink = document.createElement("link");
 fontLink.href =
-  "https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Fraunces:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&display=swap";
+  "https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300;1,9..144,400;1,9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap";
 fontLink.rel = "stylesheet";
 document.head.appendChild(fontLink);
 
-const globalStyle = document.createElement("style");
-globalStyle.innerHTML = `
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: #f2f0eb; font-family: 'DM Sans', sans-serif; color: #0d0d0d; overflow-x: hidden; }
-  .font-display { font-family: 'Fraunces', serif; }
-  .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
-  .fade-up.visible { opacity: 1; transform: translateY(0); }
-  @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-  @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
-  @keyframes scrollLine {
-    0% { opacity: 0; transform: scaleY(0); transform-origin: top; }
-    50% { opacity: 1; transform: scaleY(1); }
-    100% { opacity: 0; transform: scaleY(0); transform-origin: bottom; }
+const style = document.createElement("style");
+style.innerHTML = `
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #f5f2ec;
+    --ink: #0f0f0f;
+    --ink2: #3d3d3d;
+    --ink3: #888;
+    --border: #ddd8ce;
+    --dark: #111;
+    --dark2: #1c1c1c;
+    --green-bg: #dff3d0;
+    --green-text: #2a6b10;
+    --green-dot: #45b637;
+    --white: #ffffff;
   }
-  .pulse-dot { animation: pulse-dot 2s infinite; }
-  .float-anim { animation: float 3s ease-in-out infinite; }
-  .float-anim-delay { animation: float 3s ease-in-out 1s infinite; }
-  .scroll-line { animation: scrollLine 2s ease-in-out infinite; }
-  .slider-track { transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
-  ::-webkit-scrollbar { width: 5px; }
-  ::-webkit-scrollbar-track { background: #f2f0eb; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  .fr { font-family: 'Fraunces', serif; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 48px;
+    background: rgba(245, 242, 236, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 400; color: var(--ink); letter-spacing: -0.02em; }
+  .nav-links { display: flex; align-items: center; gap: 4px; }
+  .nav-link {
+    font-size: 13px; font-weight: 600; color: var(--ink2);
+    text-decoration: none; padding: 7px 16px;
+    border-radius: 100px; transition: all 0.18s;
+    background: transparent; border: none; cursor: pointer;
+  }
+  .nav-link:hover { background: #e8e3d8; color: var(--ink); }
+  .nav-cta {
+    background: var(--ink); color: var(--cream);
+    font-size: 13px; font-weight: 700;
+    padding: 8px 20px; border-radius: 100px;
+    text-decoration: none; transition: all 0.18s;
+    border: none; cursor: pointer;
+  }
+  .nav-cta:hover { background: #2a2a2a; transform: translateY(-1px); }
+
+  /* SECTIONS */
+  .section { max-width: 1100px; margin: 0 auto; padding: 100px 48px 72px; }
+  .section-sm { max-width: 1100px; margin: 0 auto; padding: 64px 48px; }
+  hr.sep { border: none; border-top: 1px solid var(--border); max-width: 1100px; margin: 0 auto; }
+
+  /* HERO */
+  #hero { padding-top: 130px; padding-bottom: 80px; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: var(--green-bg); color: var(--green-text);
+    font-size: 12px; font-weight: 700; letter-spacing: 0.05em;
+    padding: 6px 14px; border-radius: 100px; margin-bottom: 28px;
+  }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green-dot); animation: blink 2s infinite; }
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
+
+  .headline {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(42px, 8vw, 64px);
+    font-weight: 400;
+    line-height: 1.04;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    margin-bottom: 22px;
+  }
+  .headline em { font-style: italic; font-weight: 300; color: #555; }
+  .hero-sub {
+    font-size: 16px; color: var(--ink2); max-width: 440px;
+    line-height: 1.72; margin-bottom: 36px; font-weight: 400;
+  }
+  .btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .btn-dark {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--ink); color: var(--cream);
+    font-size: 14px; font-weight: 700;
+    padding: 13px 26px; border-radius: 100px;
+    text-decoration: none; transition: all 0.2s;
+  }
+  .btn-dark:hover { background: #272727; transform: translateY(-1px); }
+  .btn-outline {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: transparent; color: var(--ink);
+    border: 1.5px solid var(--border);
+    font-size: 14px; font-weight: 700;
+    padding: 12px 26px; border-radius: 100px;
+    text-decoration: none; transition: all 0.2s;
+  }
+  .btn-outline:hover { border-color: #aaa; transform: translateY(-1px); }
+  .arrow-badge {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: #fff; display: flex; align-items: center;
+    justify-content: center; font-size: 13px; color: var(--ink);
+  }
+
+  /* SECTION LABEL / TITLE */
+  .label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--ink3); margin-bottom: 10px;
+  }
+  .title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(30px, 5vw, 44px);
+    font-weight: 400; line-height: 1.08;
+    letter-spacing: -0.025em; margin-bottom: 32px;
+  }
+  .title em { font-style: italic; font-weight: 300; color: #666; }
+
+  /* WORK */
+  .work-header { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 14px; margin-bottom: 28px; }
+  .work-header .title { margin-bottom: 0; }
+  .projects { display: grid; gap: 14px; }
+  .project-card {
+    background: var(--dark); border-radius: 20px;
+    padding: 26px; color: #fff; position: relative; overflow: hidden;
+    transition: transform 0.2s;
+  }
+  .project-card:hover { transform: translateY(-2px); }
+  .project-card::after {
+    content: ''; position: absolute;
+    top: -80px; right: -80px;
+    width: 180px; height: 180px; border-radius: 50%;
+    background: rgba(255,255,255,0.025); pointer-events: none;
+  }
+  .proj-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; gap: 12px; }
+  .proj-title { font-family: 'Fraunces', serif; font-size: 24px; font-weight: 400; color: #fff; line-height: 1.2; letter-spacing: -0.02em; flex: 1; }
+  .proj-actions { display: flex; gap: 8px; flex-shrink: 0; }
+  .proj-action {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+    display: flex; align-items: center; justify-content: center;
+    text-decoration: none; color: #777; font-size: 14px;
+    transition: all 0.18s; border: 1px solid rgba(255,255,255,0.06);
+  }
+  .proj-action:hover { background: rgba(255,255,255,0.12); color: #fff; }
+  .proj-title { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 400; color: #fff; margin-bottom: 10px; line-height: 1.2; letter-spacing: -0.02em; }
+  .proj-desc { font-size: 13px; color: #777; line-height: 1.68; margin-bottom: 18px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag {
+    font-size: 11px; font-weight: 600;
+    background: rgba(255,255,255,0.06);
+    color: #999; padding: 4px 11px;
+    border-radius: 100px; border: 1px solid rgba(255,255,255,0.07);
+    letter-spacing: 0.02em;
+  }
+
+  /* ABOUT */
+  .about-grid { display: grid; gap: 24px; }
+  @media (min-width: 640px) { .about-grid { grid-template-columns: 1fr 1fr; } }
+  .about-text p { color: var(--ink2); line-height: 1.8; margin-bottom: 18px; font-size: 15px; }
+  .dark-card { background: var(--dark); border-radius: 20px; padding: 28px; color: #fff; }
+  .dark-card-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: rgba(255,255,255,0.07);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; margin-bottom: 18px;
+  }
+  .dark-card h3 { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 400; color: #fff; margin-bottom: 10px; line-height: 1.25; }
+  .dark-card p { font-size: 13px; color: #666; line-height: 1.72; margin-bottom: 24px; }
+  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .stat-n { font-family: 'Fraunces', serif; font-size: 36px; font-weight: 400; color: #fff; line-height: 1; }
+  .stat-l { font-size: 12px; color: #555; margin-top: 5px; font-weight: 500; }
+
+  /* SKILLS */
+  .skills-wrap { display: flex; flex-wrap: wrap; gap: 8px; }
+  .skill {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 100px; padding: 9px 18px;
+    font-size: 13px; font-weight: 600; color: var(--ink);
+    transition: all 0.18s; cursor: default;
+  }
+  .skill:hover { border-color: #aaa; transform: translateY(-1px); box-shadow: 0 2px 10px rgba(0,0,0,0.07); }
+
+  /* CONTACT */
+  .contact-card {
+    background: var(--dark); border-radius: 24px;
+    padding: 64px 40px; text-align: center;
+    color: #fff; position: relative; overflow: hidden;
+  }
+  .contact-card::before {
+    content: ''; position: absolute;
+    width: 350px; height: 350px; border-radius: 50%;
+    background: rgba(255,255,255,0.02);
+    top: -120px; left: -120px; pointer-events: none;
+  }
+  .contact-card::after {
+    content: ''; position: absolute;
+    width: 200px; height: 200px; border-radius: 50%;
+    background: rgba(255,255,255,0.02);
+    bottom: -80px; right: -80px; pointer-events: none;
+  }
+  .contact-label { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #555; margin-bottom: 16px; }
+  .contact-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(30px, 7vw, 52px);
+    font-weight: 400; color: #fff;
+    line-height: 1.08; letter-spacing: -0.025em; margin-bottom: 16px;
+  }
+  .contact-title em { font-style: italic; font-weight: 300; color: #777; }
+  .contact-sub { font-size: 15px; color: #666; max-width: 400px; margin: 0 auto 36px; line-height: 1.7; }
+  .contact-btns { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; position: relative; z-index: 1; }
+  .btn-white {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: #fff; color: var(--ink);
+    font-size: 13px; font-weight: 700;
+    padding: 12px 24px; border-radius: 100px;
+    text-decoration: none; transition: all 0.2s;
+  }
+  .btn-white:hover { background: #f0ede6; transform: translateY(-1px); }
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: transparent; color: #fff;
+    border: 1px solid rgba(255,255,255,0.18);
+    font-size: 13px; font-weight: 600;
+    padding: 12px 24px; border-radius: 100px;
+    text-decoration: none; transition: all 0.2s;
+  }
+  .btn-ghost:hover { border-color: rgba(255,255,255,0.45); transform: translateY(-1px); }
+
+  /* FOOTER */
+  footer {
+    max-width: 720px; margin: 0 auto;
+    padding: 24px 24px 40px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px;
+    border-top: 1px solid var(--border);
+  }
+  .footer-logo { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 400; color: var(--ink); flex-shrink: 0; }
+  .footer-copy { font-size: 12px; color: var(--ink3); text-align: center; flex: 1; }
+  .footer-icons { display: flex; gap: 8px; flex-shrink: 0; }
+  .footer-icon {
+    width: 34px; height: 34px; border-radius: 50%;
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ink3); text-decoration: none;
+    transition: all 0.18s; background: transparent;
+  }
+  .footer-icon:hover { border-color: var(--ink); color: var(--ink); background: #eee9df; transform: translateY(-1px); }
+  .footer-icon svg { display: block; }
+  @media (max-width: 480px) {
+    footer { flex-direction: column; align-items: center; text-align: center; gap: 14px; padding: 24px 16px 36px; }
+    .footer-copy { flex: unset; }
+  }
+
+  /* ANIMATIONS */
+  .fade-up { opacity: 0; transform: translateY(28px); transition: opacity 0.65s ease, transform 0.65s ease; }
+  .fade-up.visible { opacity: 1; transform: none; }
+
+  /* MOBILE */
+  @media (max-width: 600px) {
+    nav { padding: 12px 16px; }
+    .nav-link { display: none; }
+    .section, .section-sm { padding-left: 16px; padding-right: 16px; }
+    #hero { padding-top: 100px; }
+    .contact-card { padding: 44px 20px; }
+    footer { padding: 16px 16px 32px; }
+  }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--cream); }
   ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
 `;
-document.head.appendChild(globalStyle);
+document.head.appendChild(style);
 
 // ── Data ─────────────────────────────────────────────────────────────────────
 
 const projects = [
   {
-    id: 1,
+    id: "01",
     title: "E-commerce",
     description:
-      "This e-commerce application offers users a seamless shopping experience, including features such as product browsing, secure checkout, order tracking, and personalized recommendations.",
-    gradient: "from-[#1a1a2e] via-[#16213e] to-[#0f3460]",
+      "A seamless shopping experience with product browsing, secure checkout, order tracking, and personalized recommendations.",
+    tech: ["React", "Node.js", "Supabase", "Tailwind CSS"],
+    live: "https://fast-pizza-l5er.vercel.app",
+    github: "#",
   },
   {
-    id: 2,
-    title: "VTU clone",
+    id: "02",
+    title: "VTU Clone",
     description:
-      "I built a fully responsive clone of a data subscription website, a marketplace where users can buy and sell data and airtime. It's ensures smooth transactions with a user-friendly interface.",
-    gradient: "from-[#0d0d0d] via-[#1a1a1a] to-[#2d2d2d]",
+      "A fully responsive data subscription marketplace where users can buy and sell data and airtime with smooth, user-friendly transactions.",
+    tech: ["HTML", "Bootstrap 5", "JavaScript"],
+    live: "#",
+    github: "#",
+  },
+  {
+    id: "03",
+    title: "Waitlist",
+    description:
+      "A responsive product launch site with a full referral system, letting users refer one another and track their position ahead of launch.",
+    tech: ["HTML", "Bootstrap 5", "JavaScript"],
+    live: "#",
+    github: "#",
   },
 ];
 
@@ -69,224 +334,182 @@ const skills = [
 ];
 
 const stats = [
-  { num: "20+", label: "Projects Completed" },
-  { num: "15+", label: "Happy Clients" },
-  { num: "3+", label: "Years Experience" },
-  { num: "5★", label: "Average Rating" },
+  { n: "20+", l: "Projects Completed" },
+  { n: "15+", l: "Happy Clients" },
+  { n: "3+", l: "Years Experience" },
+  { n: "5★", l: "Average Rating" },
 ];
 
-const navItems = [
-  { label: "", icon: Home09Icon, href: "#home" },
-  { label: "", icon: WorkIcon, href: "#work" },
-];
+// ── GitHub SVG ────────────────────────────────────────────────────────────────
 
-const socials = ["Twitter", "LinkedIn", "GitHub"];
+function GhIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 0C5.373 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 6.6c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z" />
+    </svg>
+  );
+}
 
 // ── Nav ───────────────────────────────────────────────────────────────────────
 
-function Nav({ active, setActive }) {
-  const scrollTo = (e, href) => {
-    e.preventDefault();
-    const el = document.querySelector(href);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+function Nav() {
+  const go = (id) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
-
   return (
-    <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-50">
-      <div className="bg-[#1a1a1a] rounded-full px-2 py-1.5 flex items-center gap-1 shadow-xl ring-[0.5px] ring-white/[0.08]">
-        {navItems.map(({ label, icon: Icon, href }) => (
-          <button
-            key={label}
-            onClick={(e) => {
-              scrollTo(e, href);
-              setActive(label);
-            }}
-            className={`
-              flex items-center gap-[7px] text-[13px] font-medium px-[18px] py-2
-              rounded-full transition-all duration-200 tracking-wide border-none cursor-pointer
-              ${
-                active === label
-                  ? "bg-[#2e2e2e] text-[#f2f0eb]"
-                  : "bg-transparent text-[#888] hover:bg-[#242424] hover:text-[#f2f0eb]"
-              }
-            `}
-          >
-            <HugeiconsIcon icon={Icon} size={28} className="" />
-            {label}
-          </button>
-        ))}
-
-        <div className="w-px h-[18px] bg-white/10 mx-0.5 shrink-0" />
-
-        <button
-          onClick={(e) => scrollTo(e, "#contact")}
-          className="bg-[#f2f0eb] text-[#0d0d0d] font-semibold md:text-[17px] text-[12px] md:px-[22px] px-[15px] py-2
-            rounded-full transition-all duration-200 border-none cursor-pointer
-            hover:bg-[#e5e2da] active:scale-[0.97] ml-0.5"
-        >
-          Contact Me
-        </button>
+    <nav>
+      <span className="nav-logo">Chisom</span>
+      <div className="nav-links">
+        <button className="nav-link" onClick={() => go("hero")}>Home</button>
+        <button className="nav-link" onClick={() => go("work")}>Work</button>
+        <button className="nav-link" onClick={() => go("about")}>About</button>
+        <button className="nav-cta" onClick={() => window.open("/resume.pdf", "_blank")}>Resume</button>
       </div>
     </nav>
   );
 }
 
-// ── Main App ──────────────────────────────────────────────────────────────────
+// ── App ───────────────────────────────────────────────────────────────────────
 
 export default function App() {
-  const [activeNav, setActiveNav] = useState("Work");
-
   useEffect(() => {
-    const observer = new IntersectionObserver(
+    const obs = new IntersectionObserver(
       (entries) =>
         entries.forEach((e) => {
           if (e.isIntersecting) e.target.classList.add("visible");
         }),
-      { threshold: 0.15 },
+      { threshold: 0.1 }
     );
-    document.querySelectorAll(".fade-up").forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
+    document.querySelectorAll(".fade-up").forEach((el) => obs.observe(el));
+    return () => obs.disconnect();
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#f2f0eb]">
-      <Nav active={activeNav} setActive={setActiveNav} />
+    <div style={{ minHeight: "100vh", background: "var(--cream)" }}>
+      <Nav />
 
-      {/* ── HERO ─────────────────────────────────────────────── */}
-      <section
-        id="home"
-        className="max-w-[900px] mx-auto px-8 pt-40 pb-24 text-center relative"
-      >
-        {/* Available tag */}
-        <div className="mb-7">
-          <span className="inline-flex items-center gap-1.5 bg-[#d4f0c4] text-[#1a5c00] text-base font-semibold px-4 py-1.5 rounded-full tracking-wide">
-            <span className="pulse-dot w-1.5 h-1.5 rounded-full bg-[#3ea840] inline-block" />
-            Available For Work
-          </span>
+      {/* HERO */}
+      <section className="section" id="hero">
+        <div className="badge">
+          <span className="dot" />
+          Available for work
         </div>
-
-        {/* Hero title */}
-        <h1 className="font-display md:text-[clamp(45px,5vw,85px)] text-[clamp(38px,2vw,72px)] font-semibold leading-[1.05] tracking-[-0.02em] text-[#0d0d0d] mb-7">
-          I'm <em className="italic font-light">Chisom,</em>
-          <br />
-          a Fullstack Developer
+        <h1 className="headline">
+          I'm <em>Chisom,</em>
+          <br />a Fullstack Developer
           <br />
           based in Nigeria
         </h1>
-
-        <p className="text-lg font-normal text-[#5a5a5a] max-w-[420px] mx-auto leading-[1.55] mb-11">
-          I build modern web applications and focus on writing clean,
-          maintainable code that delivers fast, reliable, and user-friendly
-          digital experiences.
+        <p className="hero-sub">
+          I build modern web applications focused on clean, maintainable code
+          that delivers fast, reliable, and user-friendly digital experiences.
         </p>
-
-        <div className="flex gap-3.5 justify-center flex-wrap">
+        <div className="btn-row">
           <a
             href="#contact"
-            className="bg-[#1a1a1a] text-[#f2f0eb] text-[15px] font-semibold px-7 py-3.5 rounded-full inline-flex items-center gap-2.5 no-underline transition-all duration-200 hover:bg-[#333] hover:-translate-y-px"
+            className="btn-dark"
+            onClick={(e) => {
+              e.preventDefault();
+              document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+            }}
           >
             Contact Me
-            <span className="w-7 h-7 bg-white rounded-full flex items-center justify-center">
-              <HugeiconsIcon
-                icon={ArrowUpRight01Icon}
-                class="bi bi-arrow-up-right text-black font-bold text-sm"
-              />
-            </span>
           </a>
           <a
             href="#work"
-            className="bg-transparent text-[#0d0d0d] border border-[#ccc] text-[15px] font-semibold px-7 py-3.5 rounded-full no-underline transition-all duration-200 hover:border-[#0d0d0d] hover:-translate-y-px"
+            className="btn-outline"
+            onClick={(e) => {
+              e.preventDefault();
+              document.getElementById("work")?.scrollIntoView({ behavior: "smooth" });
+            }}
           >
-            View Works
+            View Work
           </a>
         </div>
       </section>
 
-      {/* ── WORK ─────────────────────────────────────────────── */}
-      <section id="work" className="max-w-[1100px] mx-auto px-8 py-20">
-        <div className="fade-up mb-12">
-          <p className="text-xs font-bold tracking-[0.12em] uppercase text-[#5a5a5a] mb-3">
-            Selected Projects
-          </p>
-          <div className="flex items-end justify-between flex-wrap gap-4">
-            <h2 className="font-display text-[clamp(32px,5vw,52px)] font-semibold leading-[1.1] tracking-[-0.02em]">
-              My Recent Work
-            </h2>
-            <a
-              href="#"
-              className="bg-transparent text-[#0d0d0d] border border-[#ccc] text-[13px] font-semibold px-5 py-2.5 rounded-full no-underline transition-all hover:border-[#0d0d0d]"
-            >
-              View All Projects →
-            </a>
-          </div>
+      <hr className="sep" />
+
+      {/* WORK */}
+      <section className="section fade-up" id="work">
+        <p className="label">Selected Projects</p>
+        <div className="work-header">
+          <h2 className="title">My Recent Work</h2>
+          <a href="#" className="btn-outline" style={{ fontSize: 13, padding: "9px 18px" }}>
+            All Projects →
+          </a>
         </div>
-        <div className="">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {projects.map((p) => (
-              <div
-                key={p.id}
-                className={`min-w-[320px] h-[220px] bg-gradient-to-br ${p.gradient} rounded-[20px] relative cursor-pointer`}
-              >
-                <span className=" text-white text-[20px] md:absolute bottom-3.5 left-3.5 font-semibold md:px-3.5 p-5 py-1.5 mt-5 ">
-                  {p.description}
-                </span>
+        <div className="projects">
+          {projects.map((p) => (
+            <div key={p.id} className="project-card">
+              <div className="proj-header">
+                <div className="proj-title">{p.title}</div>
+                <div className="proj-actions">
+                  <a href={p.github} className="proj-action" title="GitHub" target="_blank" rel="noreferrer">
+                    <GhIcon />
+                  </a>
+                  <a href={p.live} className="proj-action" title="Live site" target="_blank" rel="noreferrer">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M7 17L17 7M7 7h10v10"/>
+                    </svg>
+                  </a>
+                </div>
               </div>
-            ))}
-          </div>
+              <div className="proj-desc">{p.description}</div>
+              <div className="tags">
+                {p.tech.map((t) => (
+                  <span key={t} className="tag">{t}</span>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* ── ABOUT ────────────────────────────────────────────── */}
-      <section id="about" className="max-w-[1100px] mx-auto px-8 py-20">
-        <div className="fade-up grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
-          {/* Left */}
-          <div>
-            <p className="text-xs font-bold tracking-[0.12em] uppercase text-[#5a5a5a] mb-4">
-              About Me
-            </p>
-            <h2 className="font-display text-[clamp(32px,5vw,52px)] font-semibold leading-[1.1] tracking-[-0.02em] mb-6">
-              Building with purpose &{" "}
-              <em className="font-display italic font-light">precision</em>
-            </h2>
-            <p className="text-base font-normal text-[#5a5a5a] leading-[1.8] mb-5">
+      <hr className="sep" />
+
+      {/* ABOUT */}
+      <section className="section fade-up" id="about">
+        <p className="label">About Me</p>
+        <h2 className="title">
+          Building with purpose &amp; <em>precision</em>
+        </h2>
+        <div className="about-grid">
+          <div className="about-text">
+            <p>
               I'm a fullstack developer passionate about crafting web
               applications that are both performant and maintainable. I care
               deeply about code quality, developer experience, and shipping
               products that scale.
             </p>
-            <p className="text-base font-normal text-[#5a5a5a] leading-[1.8] mb-9">
+            <p>
               Based in Nigeria, I work with teams globally to build products
               people genuinely love to use — from MVPs to production systems.
             </p>
             <a
               href="#contact"
-              className="bg-[#1a1a1a] text-[#f2f0eb] text-[15px] font-semibold px-7 py-3.5 rounded-full inline-flex items-center gap-2.5 no-underline transition-all duration-200 hover:bg-[#333] hover:-translate-y-px"
+              className="btn-dark"
+              style={{ marginTop: 4 }}
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+              }}
             >
               Let's Work Together
             </a>
           </div>
-
-          {/* Right — dark card */}
-          <div className="bg-[#1a1a1a] rounded-3xl p-10 text-white">
-            <div className="w-16 h-16 rounded-2xl bg-white/[0.08] flex items-center justify-center text-3xl mb-6">
-              ✦
-            </div>
-            <h3 className="font-display text-[26px] font-semibold text-white leading-[1.2] mb-3">
-              3+ Years of Crafting Digital Experiences
-            </h3>
-            <p className="text-[15px] text-[#888] leading-[1.7] mb-8">
+          <div className="dark-card">
+            <div className="dark-card-icon">✦</div>
+            <h3>3+ Years Crafting Digital Experiences</h3>
+            <p>
               From early-stage startups to established brands, I've built
               products across fintech, e-commerce, and SaaS industries.
             </p>
-            <div className="grid grid-cols-2 gap-5">
-              {stats.map((stat) => (
-                <div key={stat.label}>
-                  <div className="font-display text-[36px] font-bold text-white leading-none mb-1">
-                    {stat.num}
-                  </div>
-                  <div className="text-[13px] text-[#666] font-medium">
-                    {stat.label}
-                  </div>
+            <div className="stats">
+              {stats.map((s) => (
+                <div key={s.l}>
+                  <div className="stat-n">{s.n}</div>
+                  <div className="stat-l">{s.l}</div>
                 </div>
               ))}
             </div>
@@ -294,83 +517,74 @@ export default function App() {
         </div>
       </section>
 
-      {/* ── SKILLS ───────────────────────────────────────────── */}
-      <section className="max-w-[1100px] mx-auto px-8 py-16">
-        <div className="fade-up text-center mb-9">
-          <p className="text-xs font-bold tracking-[0.12em] uppercase text-[#5a5a5a] mb-3">
-            Toolkit
-          </p>
-          <h2 className="font-display text-[clamp(32px,5vw,52px)] font-semibold leading-[1.1] tracking-[-0.02em]">
-            Skills & Tools
-          </h2>
-        </div>
-        <div className="fade-up flex flex-wrap gap-3 justify-center">
+      <hr className="sep" />
+
+      {/* SKILLS */}
+      <section className="section-sm fade-up">
+        <p className="label">Toolkit</p>
+        <h2 className="title" style={{ marginBottom: 24 }}>Skills &amp; Tools</h2>
+        <div className="skills-wrap">
           {skills.map((s) => (
-            <div
-              key={s.name}
-              className="bg-white border border-[#e0ddd6] rounded-full px-5 py-2.5 text-sm font-medium text-[#0d0d0d] inline-flex items-center gap-2 transition-all duration-200 hover:border-[#aaa] hover:-translate-y-0.5 hover:shadow-md cursor-default"
-            >
-              <span>{s.icon}</span>
-              <span>{s.name}</span>
+            <div key={s.name} className="skill">
+              <span style={{ fontSize: 15 }}>{s.icon}</span>
+              {s.name}
             </div>
           ))}
         </div>
       </section>
 
-      {/* ── CONTACT ──────────────────────────────────────────── */}
-      <section id="contact" className="max-w-[1100px] mx-auto px-8 pb-28 pt-4">
-        <div className="fade-up bg-[#1a1a1a] rounded-[32px] px-14 py-20 text-white text-center relative overflow-hidden">
-          {/* Glow */}
-          <div className="absolute w-[400px] h-[400px] rounded-full bg-white/[0.04] -top-24 -left-24 pointer-events-none" />
-          <div className="absolute w-[300px] h-[300px] rounded-full bg-white/[0.03] -bottom-16 -right-16 pointer-events-none" />
-
-          <p className="text-xs font-bold tracking-[0.12em] uppercase text-[#666] mb-4 relative z-10">
-            Get In Touch
-          </p>
-          <h2 className="font-display text-[clamp(36px,6vw,64px)] font-semibold text-white leading-[1.1] tracking-[-0.02em] mb-5 relative z-10">
+      {/* CONTACT */}
+      <section className="section fade-up" id="contact">
+        <div className="contact-card">
+          <div className="contact-label">Get In Touch</div>
+          <div className="contact-title">
             Let's create something
             <br />
-            <em className="italic font-light">amazing</em> together
-          </h2>
-          <p className="text-base text-[#888] max-w-[500px] mx-auto leading-[1.7] mb-11 relative z-10">
+            <em>amazing</em> together
+          </div>
+          <div className="contact-sub">
             Have a project in mind? I'd love to hear about it. Let's talk and
             see how I can help bring your vision to life.
-          </p>
-          <div className="flex gap-3.5 justify-center flex-wrap relative z-10">
-            <a
-              href="mailto:chisomchidike03@email.com"
-              className="bg-white text-[#0d0d0d] text-[15px] font-bold px-8 py-3.5 rounded-full inline-flex items-center gap-2 no-underline transition-all duration-200 hover:bg-[#f0ede8] hover:-translate-y-px"
-            >
-              Send Me an Email ✉️
+          </div>
+          <div className="contact-btns">
+            <a href="mailto:chisomchidike03@email.com" className="btn-white">
+              Send an Email
             </a>
             <a
               href="https://github.com/iamchisomdev"
-              className="bg-transparent text-white border border-white/25 text-[15px] font-semibold px-8 py-3.5 rounded-full no-underline transition-all duration-200 hover:border-white/50 hover:-translate-y-px"
+              target="_blank"
+              rel="noreferrer"
+              className="btn-ghost"
             >
-              View GitHub →
+              View GitHub
             </a>
           </div>
         </div>
       </section>
 
-      {/* ── FOOTER ───────────────────────────────────────────── */}
-      <footer className="max-w-[1100px] mx-auto px-8 py-8 flex items-center justify-between flex-wrap gap-4 border-t border-[#ddd]">
-        <div className="font-display text-xl font-semibold text-[#0d0d0d]">
-          Chisom.
-        </div>
-        <p className="text-[13px] text-[#5a5a5a]">
-          © 2026 Chisom. All rights reserved.
-        </p>
-        <div className="flex gap-5">
-          {socials.map((s) => (
-            <a
-              key={s}
-              href="#"
-              className="text-[13px] font-medium text-[#5a5a5a] no-underline transition-colors duration-200 hover:text-[#0d0d0d]"
-            >
-              {s}
-            </a>
-          ))}
+      {/* FOOTER */}
+      <footer>
+        <span className="footer-logo">Chisom</span>
+        <span className="footer-copy">© 2026 Chisom. All rights reserved.</span>
+        <div className="footer-icons">
+          {/* Twitter / X */}
+          <a href="#" className="footer-icon" title="Twitter" target="_blank" rel="noreferrer">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77Z"/>
+            </svg>
+          </a>
+          {/* LinkedIn */}
+          <a href="#" className="footer-icon" title="LinkedIn" target="_blank" rel="noreferrer">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+          </a>
+          {/* GitHub */}
+          <a href="https://github.com/iamchisomdev" className="footer-icon" title="GitHub" target="_blank" rel="noreferrer">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0C5.373 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 6.6c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+            </svg>
+          </a>
         </div>
       </footer>
     </div>
